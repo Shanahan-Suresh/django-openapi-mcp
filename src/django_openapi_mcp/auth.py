@@ -1,9 +1,9 @@
 """Credential passthrough for outgoing tool requests.
 
 Real Django APIs are authenticated, so the generated tools must carry
-credentials to the underlying endpoints. v0.1 supports static credentials from
-configuration; the function signature leaves room for per-request passthrough
-(forwarding an incoming caller's auth) in a later version.
+credentials to the underlying endpoints. Credentials are static, read once from
+configuration; forwarding an incoming caller's own auth (per-request
+passthrough) is intentionally out of scope here.
 """
 
 from __future__ import annotations

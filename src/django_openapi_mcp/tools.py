@@ -2,8 +2,9 @@
 
 Each operation becomes a :class:`ToolSpec`: a name, a description, a JSON-Schema
 describing its inputs (path + query parameters), and enough routing info to
-execute the call later. v0.1 generates read-only (GET) tools; request bodies for
-write operations are intentionally out of scope.
+execute the call later. Which HTTP methods become tools is controlled by
+``INCLUDE_METHODS`` (read-only ``GET`` by default); request bodies for write
+operations are intentionally out of scope.
 """
 
 from __future__ import annotations
@@ -42,15 +43,24 @@ def build_tool_specs(schema: dict[str, Any]) -> list[ToolSpec]:
             if method.upper() not in include_methods or not isinstance(operation, dict):
                 continue
             spec = _build_one(schema, path, method.upper(), operation)
-            # Guard against duplicate operationIds producing colliding tool names.
-            base = spec.name
-            n = 2
-            while spec.name in seen:
-                spec.name = f"{base}_{n}"
-                n += 1
+            spec.name = _dedupe_name(spec.name, seen)
             seen.add(spec.name)
             specs.append(spec)
     return specs
+
+
+def _dedupe_name(name: str, seen: set[str]) -> str:
+    """Return ``name`` (or a suffixed variant) that does not collide with ``seen``.
+
+    Duplicate ``operationId``s would otherwise produce colliding tool names,
+    which MCP clients reject.
+    """
+    if name not in seen:
+        return name
+    n = 2
+    while f"{name}_{n}" in seen:
+        n += 1
+    return f"{name}_{n}"
 
 
 def _is_excluded(path: str, cfg: dict[str, Any]) -> bool:
@@ -66,9 +76,7 @@ def _build_one(
     op_id = operation.get("operationId") or _fallback_id(method, path)
     name = _sanitize_name(op_id)
     description = (
-        operation.get("summary")
-        or operation.get("description")
-        or f"{method} {path}"
+        operation.get("summary") or operation.get("description") or f"{method} {path}"
     )
 
     properties: dict[str, Any] = {}
