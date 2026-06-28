@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-openapi-mcp"
+version = "0.1.0"
+description = "Auto-generate a Model Context Protocol (MCP) server from your Django/DRF OpenAPI schema."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Shanahan Suresh" }]
+keywords = ["django", "django-rest-framework", "openapi", "mcp", "model-context-protocol", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "Django>=4.2",
+    "djangorestframework>=3.14",
+    "drf-spectacular>=0.27",
+    "mcp>=1.10",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+http = ["uvicorn>=0.27", "starlette>=0.37"]
+yaml = ["pyyaml>=6.0"]
+dev = ["pytest>=8.0", "pytest-django>=4.8"]
+
+[project.urls]
+Homepage = "https://github.com/Shanahan-Suresh/django-openapi-mcp"
+Repository = "https://github.com/Shanahan-Suresh/django-openapi-mcp"
+Issues = "https://github.com/Shanahan-Suresh/django-openapi-mcp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_openapi_mcp"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+pythonpath = ["src", "example"]
+addopts = "-v"

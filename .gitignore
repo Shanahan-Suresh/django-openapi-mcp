@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtualenv
+.venv/
+venv/
+
+# Django
+*.sqlite3
+db.sqlite3
+
+# Test / tooling
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Launch / marketing docs
+launch/
