@@ -10,7 +10,7 @@ With the current settings (`EXCLUDE_PATHS: ["/api/schema"]`, `INCLUDE_METHODS: [
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.10+
 - The repo cloned locally
 
 ---
@@ -33,10 +33,9 @@ source .venv/bin/activate
 
 ```bash
 pip install -e ".[http]"
-pip install -r example/requirements.txt   # if present, otherwise the editable install covers it
 ```
 
-If there's no `requirements.txt` in `example/`, the editable install from the repo root is sufficient — the example's `manage.py` uses the same environment.
+The editable install from the repo root pulls in everything the example needs (Django, DRF, drf-spectacular) — the example's `manage.py` runs in the same environment.
 
 **3. Set up the database and seed data**
 
