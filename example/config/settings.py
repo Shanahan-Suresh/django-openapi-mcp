@@ -1,4 +1,5 @@
 """Django settings for the django-openapi-mcp example project."""
+
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent

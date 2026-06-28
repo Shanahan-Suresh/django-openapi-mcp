@@ -31,7 +31,7 @@ dependencies = [
 [project.optional-dependencies]
 http = ["uvicorn>=0.27", "starlette>=0.37"]
 yaml = ["pyyaml>=6.0"]
-dev = ["pytest>=8.0", "pytest-django>=4.8"]
+dev = ["pytest>=8.0", "pytest-django>=4.8", "ruff>=0.6"]
 
 [project.urls]
 Homepage = "https://github.com/Shanahan-Suresh/django-openapi-mcp"
@@ -44,4 +44,22 @@ packages = ["src/django_openapi_mcp"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 pythonpath = ["src", "example"]
-addopts = "-v"
+addopts = "-v --strict-markers"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+src = ["src", "tests", "example"]
+# Django generates these; they are not ours to style.
+extend-exclude = ["**/migrations/**"]
+
+[tool.ruff.lint]
+# pyflakes (F), pycodestyle (E/W), isort (I), pyupgrade (UP), bugbear (B).
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["django_openapi_mcp"]
+
+[tool.ruff.lint.per-file-ignores]
+# Standalone scripts must call django.setup() before importing models.
+"example/seed.py" = ["E402"]

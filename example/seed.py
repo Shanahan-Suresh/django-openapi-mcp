@@ -1,4 +1,5 @@
 """Idempotent data seed — run once to populate the example database."""
+
 import os
 import sys
 
@@ -7,6 +8,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 import django
+
 django.setup()
 
 from shop.models import Order, Product
