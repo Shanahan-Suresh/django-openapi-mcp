@@ -1,4 +1,5 @@
 """Tests for django_openapi_mcp.server.build_server()."""
+
 import pytest
 
 from django_openapi_mcp.server import build_server
@@ -40,7 +41,7 @@ def test_products_retrieve_tool_exists():
     _, specs = build_server()
     names = {s.name for s in specs}
     product_retrieve = [n for n in names if "product" in n and "retrieve" in n]
-    assert product_retrieve, f"No products-retrieve tool found. Tool names: {sorted(names)}"
+    assert product_retrieve, f"No products-retrieve tool. Names: {sorted(names)}"
 
 
 @pytest.mark.django_db
@@ -49,6 +50,7 @@ def test_list_tools_handler_registered():
     server, specs = build_server()
     # The MCP lowlevel Server stores handlers; verify it is a Server instance
     from mcp.server.lowlevel import Server
+
     assert isinstance(server, Server)
 
 

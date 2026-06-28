@@ -1,4 +1,5 @@
 """Tests for django_openapi_mcp.introspect.get_schema()."""
+
 import pytest
 
 from django_openapi_mcp.introspect import get_schema
@@ -22,7 +23,7 @@ def test_schema_contains_products_endpoint():
     schema = get_schema()
     paths = schema.get("paths", {})
     product_paths = [p for p in paths if "product" in p]
-    assert product_paths, f"No products endpoint found. Available paths: {list(paths.keys())}"
+    assert product_paths, f"No products endpoint found. Paths: {list(paths)}"
 
 
 @pytest.mark.django_db
@@ -30,7 +31,7 @@ def test_schema_contains_orders_endpoint():
     schema = get_schema()
     paths = schema.get("paths", {})
     order_paths = [p for p in paths if "order" in p]
-    assert order_paths, f"No orders endpoint found. Available paths: {list(paths.keys())}"
+    assert order_paths, f"No orders endpoint found. Paths: {list(paths)}"
 
 
 @pytest.mark.django_db

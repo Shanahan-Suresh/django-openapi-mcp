@@ -29,7 +29,6 @@ async def main() -> int:
             await session.initialize()
 
             tools = (await session.list_tools()).tools
-            names = sorted(t.name for t in tools)
             print(f"[OK] handshake complete; {len(tools)} tools advertised")
             for t in tools:
                 req = t.inputSchema.get("required", [])
@@ -37,7 +36,11 @@ async def main() -> int:
 
             # Pick the products list tool (no required args) and call it.
             list_tool = next(
-                (t for t in tools if "product" in t.name and not t.inputSchema.get("required")),
+                (
+                    t
+                    for t in tools
+                    if "product" in t.name and not t.inputSchema.get("required")
+                ),
                 None,
             )
             if list_tool is None:

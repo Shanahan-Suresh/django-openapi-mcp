@@ -1,6 +1,6 @@
 """Shared pytest fixtures for django-openapi-mcp tests."""
-import pytest
 
+import pytest
 
 MINIMAL_SCHEMA = {
     "openapi": "3.0.3",
