@@ -161,8 +161,8 @@ The source mirrors that pipeline:
 
 There are already several great works in this space, and they're well worth checking out:
 
+- [django-mcp](https://github.com/gts360/django-mcp-server): A feature-rich Django integration that exposes models, custom views, and even Django Admin actions to Claude.
 - [django-rest-framework-mcp](https://github.com/zacharypodbela/django-rest-framework-mcp): A DRF-focused package that transforms existing ViewSets and Serializers into MCP tools.
-- [django-mcp](https://github.com/gts360/django-mcp-server): A broader, feature-rich Django integration that exposes models, custom views, and even Django Admin actions to Claude.
 - [openapi-to-mcp](https://pypi.org/project/openapi-to-mcp/), [openapi-mcp-generator](https://pypi.org/project/openapi-mcp-generator/): OpenAPI → MCP converters.
 - [FastMCP](https://github.com/jlowin/fastmcp): includes native OpenAPI support.
 
