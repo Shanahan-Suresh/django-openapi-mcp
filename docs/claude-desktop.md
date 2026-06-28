@@ -1,20 +1,20 @@
 # Connecting to Claude Desktop
 
-`django-openapi-mcp` serves a standard stdio MCP server, so Claude Desktop can
-launch it directly.
+`django-openapi-mcp` serves a standard stdio MCP server. Claude Desktop can launch and talk to it directly. Here's the five-minute setup.
 
 ## 1. Open the config file
 
-The reliable way on any platform and install type: in Claude Desktop, open
-**Settings → Developer → Edit Config**. That opens — and creates if it doesn't
-exist — the correct `claude_desktop_config.json` and reveals it in your file
-manager. Use this and you never have to guess the path.
+The reliable path on every platform and install type: in Claude Desktop, open
+**Settings → Developer → Edit Config**. That opens the correct
+`claude_desktop_config.json` (creating it if it doesn't exist yet) and reveals it
+in your file manager. Use that button and you never have to guess where the file
+lives.
 
 If you'd rather find it manually:
 
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows (standalone installer):** `%APPDATA%\Claude\claude_desktop_config.json`
-- **Windows (Microsoft Store build):** the path above is redirected — the file
+- **Windows (Microsoft Store build):** the path above is redirected. The file
   actually lives under
   `%LOCALAPPDATA%\Packages\Claude_<id>\LocalCache\Roaming\Claude\claude_desktop_config.json`.
   The `<id>` varies per machine, so the Edit Config button is far easier.
@@ -23,10 +23,10 @@ If the file is empty or missing, create it with just the `mcpServers` block belo
 
 ## 2. Add a server entry
 
-Point `command` at the Python interpreter from the virtualenv where your Django
-project and `django-openapi-mcp` are installed, and `cwd` at the directory
-containing `manage.py` (the `example/` subdirectory of this repo when using the
-bundled demo, or your own project root).
+Two fields do the real work: point `command` at the Python interpreter from the
+virtualenv where your Django project and `django-openapi-mcp` are installed, and
+`cwd` at the directory that holds `manage.py` (the repo's `example/` subdirectory
+for the bundled demo, or your own project root).
 
 ### Using the bundled example project
 
@@ -75,10 +75,10 @@ On Windows use backslash paths and `Scripts\python.exe`:
 
 ## 3. Make sure the API is reachable
 
-Tool *execution* calls your live API at `BASE_URL` (from `DJANGO_OPENAPI_MCP` in
-`settings.py`), so that server needs to be running before you invoke tools.
-Schema generation happens in-process when the MCP server starts — the API server
-is not required for tool registration, only for tool execution.
+Remember the split. Tool *execution* calls your live API at `BASE_URL` (set in
+`DJANGO_OPENAPI_MCP` in `settings.py`), so that server has to be running before
+you invoke a tool. Schema generation happens in-process when the MCP server
+starts, so the API server isn't needed to *register* tools, only to *run* them.
 
 For the bundled example, run the API first in a separate terminal:
 
@@ -90,25 +90,25 @@ python manage.py runserver  # keep this running
 
 ## 4. Restart Claude Desktop
 
-Quit and relaunch Claude Desktop after editing the config. Your endpoints now
-appear as tools. With the bundled example you should see four tools:
-`products_list`, `products_retrieve`, `orders_list`, `orders_retrieve`.
+Fully quit and relaunch Claude Desktop after editing the config. A reload isn't
+enough. Your endpoints now show up as tools; with the bundled example you'll see
+four: `products_list`, `products_retrieve`, `orders_list`, `orders_retrieve`.
 
-Ask Claude something like "list all products that are in stock" — it will call
-`products_list` with `in_stock=true` automatically.
+Ask in plain English ("list all products that are in stock") and Claude calls
+`products_list` with `in_stock=true` on its own.
 
 ## Troubleshooting
 
 - **No tools appear / server fails to start:** run the same command in a terminal
-  to see the error — `python manage.py run_mcp_server --transport stdio`. It
+  to see the error: `python manage.py run_mcp_server --transport stdio`. It
   prints the generated tool count to stderr on startup.
 - **Tools appear but return connection errors:** confirm `BASE_URL` in your
   `DJANGO_OPENAPI_MCP` settings matches the running API server address, and that
   any configured `AUTH` credentials are valid.
 - **Wrong tool count:** check `EXCLUDE_PATHS` and `INCLUDE_METHODS` in your
-  `DJANGO_OPENAPI_MCP` settings — by default only `GET` endpoints are exposed.
+  `DJANGO_OPENAPI_MCP` settings. By default only `GET` endpoints are exposed.
 
-## The stdio footgun
+## The stdio gotcha
 
 **Never write to stdout** in any code that runs while the MCP server is active in
 stdio mode. Stdout carries the MCP wire protocol; anything else written there
@@ -123,5 +123,5 @@ print("debug info", file=sys.stderr)  # safe
 # or use Django's logging framework, which goes to stderr by default
 ```
 
-The management command itself follows this rule — `self.stderr.write(...)` for
+The management command itself follows this rule: `self.stderr.write(...)` for
 diagnostics, never `self.stdout.write(...)`.
