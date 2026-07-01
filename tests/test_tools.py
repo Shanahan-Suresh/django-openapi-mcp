@@ -152,6 +152,69 @@ def test_required_query_param_is_in_required():
     assert "q" in tool.input_schema.get("required", [])
 
 
+def test_xquik_openapi31_search_query_parameters():
+    schema = {
+        "openapi": "3.1.0",
+        "info": {"title": "Xquik API", "version": "1.0"},
+        "servers": [{"url": "https://xquik.com"}],
+        "components": {
+            "securitySchemes": {
+                "apiKey": {"type": "apiKey", "name": "x-api-key", "in": "header"}
+            }
+        },
+        "paths": {
+            "/api/v1/x/tweets/search": {
+                "get": {
+                    "operationId": "searchTweets",
+                    "summary": "Search X posts",
+                    "security": [{"apiKey": []}],
+                    "parameters": [
+                        {
+                            "name": "q",
+                            "in": "query",
+                            "required": True,
+                            "schema": {"type": "string"},
+                        },
+                        {
+                            "name": "queryType",
+                            "in": "query",
+                            "schema": {
+                                "type": "string",
+                                "enum": ["Latest", "Top"],
+                                "default": "Latest",
+                            },
+                        },
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "schema": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 200,
+                                "default": 20,
+                            },
+                        },
+                    ],
+                    "responses": {"200": {"description": "Search results"}},
+                }
+            }
+        },
+    }
+
+    specs = build_tool_specs(schema)
+    tool = _get_tool(specs, "searchTweets")
+
+    assert tool is not None
+    assert tool.description == "Search X posts"
+    assert tool.method == "GET"
+    assert tool.path == "/api/v1/x/tweets/search"
+    assert "q" in tool.input_schema.get("required", [])
+    assert tool.input_schema["properties"]["queryType"]["enum"] == ["Latest", "Top"]
+    assert tool.input_schema["properties"]["queryType"]["default"] == "Latest"
+    assert tool.input_schema["properties"]["limit"]["maximum"] == 200
+    assert {"name": "q", "in": "query"} in tool.params
+
+
 def test_ref_parameter_resolved(minimal_schema):
     schema = dict(minimal_schema)
     schema["paths"] = {
