@@ -161,9 +161,9 @@ The source mirrors that pipeline:
 
 - **Positioning:** a reference implementation backing a learning post, not a library. Prior art is crowded (below), so it is not on PyPI by decision. Install is a clone or `pip install "git+https://github.com/Shanahan-Suresh/django-openapi-mcp"`.
 - **Clean room:** the project it is loosely inspired by is not a real MCP server, and none of that project's code, names or schema appear here. Techniques generalise; names and schema do not.
-- **Verified:** both transports against the example DRF project (products/orders) with a real MCP client; 29 pytest cases pass. Dev environment: `.venv`, Python 3.13.
+- **Verified:** both transports against the example DRF project (products/orders) with a real MCP client; 47 pytest cases pass. Dev environment: `.venv`, Python 3.13.
 - **Companion post:** one canonical dev.to article, drafted and unpublished: wiring, the low-level Server versus FastMCP choice, `$ref` collisions, the stdio-stdout footgun, safe-by-default, auth honesty, then a condensed production-hardening half (semantic enrichment, ReAct loop, error classification and recovery, provider fallback). It is deliberately a single post, with no promised Part 2.
-- **Owed, by the maintainer:** publish the post, capture a Claude Desktop screenshot or GIF, put the article URL into the README placeholder, then distribute (dev.to, LinkedIn, Show HN, r/django, r/Python).
+- **Owed, by the maintainer:** publish the post, capture a Claude Desktop screenshot or GIF, add the article URL to this README, then distribute (dev.to, LinkedIn, Show HN, r/django, r/Python).
 
 ## Related projects
 
