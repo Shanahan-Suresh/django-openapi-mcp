@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
+    "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
     "django_openapi_mcp",
@@ -25,6 +26,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+# The browsable API and the Swagger page render templates and static files.
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
+    }
+]
+
+STATIC_URL = "static/"
 
 DATABASES = {
     "default": {
