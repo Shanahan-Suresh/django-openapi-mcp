@@ -24,7 +24,7 @@ dependencies = [
     "Django>=4.2",
     "djangorestframework>=3.14",
     "drf-spectacular>=0.27",
-    "mcp>=1.10",
+    "mcp>=1.10,<2",  # mcp 2.x drops the low-level Server.list_tools decorator
     "httpx>=0.27",
 ]
 
@@ -50,8 +50,8 @@ addopts = "-v --strict-markers"
 line-length = 88
 target-version = "py310"
 src = ["src", "tests", "example"]
-# Django generates these; they are not ours to style.
-extend-exclude = ["**/migrations/**"]
+# Django generates the migrations; the Markdown code blocks keep hand-aligned comments.
+extend-exclude = ["**/migrations/**", "*.md"]
 
 [tool.ruff.lint]
 # pyflakes (F), pycodestyle (E/W), isort (I), pyupgrade (UP), bugbear (B).
